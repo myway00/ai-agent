@@ -1,9 +1,9 @@
 import streamlit as st
-from backend.agent import get_self_intro_feedback
+from backend.agent import multi_agent_pipeline
 from backend.rag import build_vector_db
 
 st.set_page_config(page_title="AI 자기소개서 코치", layout="wide")
-st.title("🤖  코코치")
+st.title("🤖AI 자기소개서 코치 (AI Self-Introduction Coach)")
 
 uploaded_file = st.file_uploader("📄 자기소개서 텍스트 파일 업로드 (.txt)", type=["txt"])
 
@@ -14,9 +14,8 @@ if uploaded_file is not None:
     if st.button("분석하기"):
         if text.strip():
             with st.spinner("AI 분석 중..."):
-                # 벡터 DB 생성
                 build_vector_db(text)
-                feedback = get_self_intro_feedback(text)
+                feedback = multi_agent_pipeline(text)
 
             st.subheader("📌 분석 결과")
             st.write(feedback)
